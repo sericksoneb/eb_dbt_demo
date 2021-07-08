@@ -1,9 +1,9 @@
-# dbt_demo
+# Eide Bailly dbt Demo
 
 ## Table of Contents
 - [PreReqs](#prereqs)
-- [Install DBT CLI](#install-dbt-cli)
-- [Useful DBT Commands](#useful-dbt-commands)
+- [Install dbt CLI](#install-dbt-cli)
+- [Useful dbt Commands](#useful-dbt-commands)
 - [Troubleshooting](#troubleshooting)
 - [Get DBT Cloud](#get-dbt-cloud)	
 
@@ -12,10 +12,9 @@
 - [Git](https://git-scm.com/downloads)
 - [Python3](https://www.python.org/downloads/windows/) 
 
-<!-- ## Getting Started with DBT
-1. Sign up for a [DBT Cloud trial](https://www.getdbt.com/signup/) -->
+## Clone this Repository
 
-## Install DBT CLI
+## Install dbt CLI
 
 1. Change to your personal root folder (i.e. C:/Users/<your_user>/)
 
@@ -32,7 +31,7 @@
 		
       ```bash
       # Add alias to ~/.bashrc
-cd ~                                		    #change to the root directory
+      cd ~                                		    #change to the root directory
       nano .bashrc                        	    #open the file in a text editor
 
       #Paste these commands in the text box: 
@@ -41,19 +40,20 @@ cd ~                                		    #change to the root directory
 
       #Ctrl+X to exit, press 'Y' to save changes
       source .bashrc                      	    #reload your .bashrc file so the aliases work
-
       ```
 	
 	### PowerShell
+	
 	```PowerShell
 	py -m venv dbt-env                          #Create a Virtual Environment for DBT called "dbt-env"
 	.\\dbt-env\Scripts\activate                 #Activate the virtual environment
 	pip install dbt                             #Install DBT
 	dbt deps                                    #Install dbt_utils (used in most dbt scripts)
 	```
+	If you get an error running `dbt deps`, check out the [troubleshooting](#troubleshooting) section
 	
 3. Connect to Snowflake
-  - Once dbt is installed, you will need to create a profiles file (first check to see if one was created automatically) that will establish a connection to Snowflake.
+    - Once dbt is installed, you will need to create a profiles file (first check to see if one was created automatically) that will establish a connection to Snowflake.
     - Open a blank notepad and paste the code below. Search "DBT Demo" in LastPass for the login credentials.
     ```
     eb-dbt-demo:
@@ -91,13 +91,20 @@ cd ~                                		    #change to the root directory
     target: dev
     
     ```
-  - Save the new file as "profiles.yml" in your dbt-env virtual environment you created in step 2. 
+    - Save the new file as "profiles.yml" in your dbt-env virtual environment you created in step 2. 
 
-4. Run DBT
+4. Run dbt
   If you made it this far, great job! You should now be able to run dbt commands in your repository. Let's check. 
-  -  Change your directory to this git repository (dbt_demo) that you should have cloned/downloaded(`cd /Xerva/Training/dbt_demo/`).
-  -  Refer back to step 2 to activate your virtual environment (if you are on the same command line as previous steps, you won't have to activate it again)
-  -  Run `dbt test` to make sure dbt runs (if it does, dbt was installed correctly! If it doesn't, refer to the [troubleshooting](#troubleshooting) section below).
+    -  Change your directory to this git repository (dbt_demo) that you should have cloned/downloaded(`cd /Xerva/Training/dbt_demo/`).
+    -  Refer back to step 2 to activate your virtual environment (if you are on the same command line as previous steps, you won't have to activate it again)
+    -  Run `dbt test` to make sure dbt runs (if it does, dbt was installed correctly! If it doesn't, refer to the [troubleshooting](#troubleshooting) section below).
+
+5. Participation 
+Now that you have successfully installed dbt, let's test it and make sure it runs.
+    1. Login to [Snowflake](https://xna97994.us-east-1.snowflakecomputing.com/) using the credentials found in LastPass (listed as "Eide Bailly - SnowflakeAdmin" under Shared-Xerva Developers)
+    2. Open a worksheet and execute this SQL command, replacing <name> with your name: `INSERT INTO DBT_DEMO_DW.DATALAKE.PARTICIPATION_USERS values('<name>', GETDATE());`
+    3. Go to VSC, open a terminal in your project, and execute `dbt run -m dim_participation` to run the dim_participation model.
+    4. Go back to Snowflake and query the table DBT_DEMO_DW.DW_DEV.DIM_PARTICIPATION to see if your name is in the table. If it is, congratulations! You have successfully completed setting up dbt. 
 
 ## Useful DBT Commands
 `dbt run -m model_name` will run the select query for the specified model 
@@ -112,12 +119,21 @@ cd ~                                		    #change to the root directory
       **Note:** If you receive an error when creating the virtualenv, you may need to run your CLI as Administrator  
 - If your dbt install does not create a .dbt folder by default, you can change the DBT_PROFILE to look for a folder you specify (in this case, you will want it to be the virtual environment folder you created at `C:/Users/<YourUser>/<YourVenvFolder>`
   * Run this command to change the folder location: `export DBT_PROFILES_DIR=~/dbt-env`
-  * Make sure you add the `profiles.yml` file from step 2 to the virtual environment folder you created [above](#install-dbt-cli) (in this case, "dbt-env"). 
-
+  * Make sure you add the `profiles.yml` file from step 2 to the virtual environment folder you created [above](#install-dbt-cli) (in this case, "dbt-env").
+  * **Note:** You may want to do this if you have multiple dbt projects. This way, you can have multiple profiles.yml files and can therefore keep your login credentials separated between clients/projects 
+- If you received an error running `dbt deps`, you may need to manually add the packages.yml file to your project. Once you have created a repository and added your dbt project to the repo, you will need to create a file called "packages.yml" and place it in the same location as your dbt_project.yml. Then, add this code and rerun `dbt deps` in your command line. The dbt_utils version below only works for dbt version 19.2, which is the current version at the time this tutorial was made. You may need to adjust it depending on your current dbt version ([check here](https://github.com/dbt-labs/dbt-utils/releases) to find the dbt_utils version that you need.
+  ```
+  packages:
+  - package: fishtown-analytics/dbt_utils
+    version: 0.6.4
+  ```
+  
 # Get DBT Cloud
-For simplicity, I have created a DBT Cloud environment for each of you to use. Although you will not be creating your own DBT Cloud environment, here are a list of steps to go through in creating a new project. 
-1. [Sign up](https://www.getdbt.com/signup/) for DBT Cloud
-2. Create new [Github integration](https://cloud.getdbt.com/#/profile/integrations/). This will install DBT Cloud in your github repository and link your project to the repository. 
-3. Configure project to use DBT repository and Establish Connection to DB (Account Settings > Projects > Project Name > Add Repository/Connection) 
-4. Create [Dev/Prod Environments](https://cloud.getdbt.com/#/accounts/21506/projects/35634/environments/).
+For simplicity, I have created a dbt Cloud environment for each of you to use. This repository is linked to the DBT Cloud environment I created so that you can run dbt commands and make updates to the dbt repository. Although you do not need to create your own dbt Cloud environment, here are a list of steps to go through in creating a new project. 
+1. Follow the steps found in [DBT Initial Configuration](https://github.com/sericksoneb/eb_dbt_demo/blob/main/DBT%20Initial%20Configuration.md)
+2. [Sign up](https://www.getdbt.com/signup/) for dbt Cloud
+3. Create new [Github integration](https://cloud.getdbt.com/#/profile/integrations/). This will install dbt Cloud in your github repository and link your project to the repository. 
+4. Configure project to use dbt repository and Establish Connection to DB (Account Settings > Projects > Project Name > Add Repository/Connection) 
+5. Add generated deploy key to your github repository
+6. Create [Dev/Prod Environments](https://cloud.getdbt.com/#/accounts/21506/projects/35634/environments/).
 
