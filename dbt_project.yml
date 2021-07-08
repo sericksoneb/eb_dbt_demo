@@ -1,0 +1,36 @@
+# project
+name: eb_dbt_demo
+version: '1.0.0'
+
+# config version
+config-version: 2
+
+# profile
+profile: 'snowflake-dbt-demo'
+
+# file path configs
+source-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+data-paths: ["data"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# model configs
+models:
+  
+  +snowflake_warehouse: "DEMO_WH"
+  
+  eb_dbt_demo:
+    enabled: true
+    materialized: table
+    staging:
+      +enabled: true
+      +materialized: table
+      +schema: staging 
+
+# snowflake database configs 
+quoting:
+  database: false
+  identifier: false
+  schema: false
