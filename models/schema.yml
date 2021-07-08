@@ -15,4 +15,9 @@ sources:
   tables: 
   - name: participation_users     # this is the name of the table in Snowflake
 
-
+- name: snowflake_data
+  database: SNOWFLAKE_SAMPLE_DATA
+  schema: TPCH_SF001
+  
+  tables: 
+  - name: store_sales
