@@ -1,0 +1,18 @@
+
+version: 2
+
+quoting:
+  database: false
+  schema: false
+  identifier: false
+
+sources: 
+
+- name: datalake
+  database: DBT_DEMO_DW
+  schema: datalake
+
+  tables: 
+  - name: participation_users     # this is the name of the table in Snowflake
+
+
