@@ -13,15 +13,16 @@
 - [Python3](https://www.python.org/downloads/windows/) 
 
 ## Clone this Repository
+If you haven't already, clone this repository to your local machine. Open the project with Visual Studio Code
 
 ## Install dbt CLI
 
 1. Change to your personal root folder (i.e. C:/Users/<your_user>/)
 
 2. Install DBT using Command Line Interface
-	### Git Bash
+	### Git Bash (login as administrator)
 	```bash
-	virtualenv -m venv dbt-env                  #Create a Virtual Environment for DBT called "dbt-env"
+	python -m venv dbt-env                      #Create a Virtual Environment for DBT called "dbt-env"
 	source ~/dbt-env/Scripts/activate           #Activate the virtual environment
 	pip install dbt                             #Install DBT
 	dbt deps                                    #Install dbt_utils (used in most dbt scripts)
@@ -50,7 +51,7 @@
 	pip install dbt                             #Install DBT
 	dbt deps                                    #Install dbt_utils (used in most dbt scripts)
 	```
-	If you get an error running `dbt deps`, check out the [troubleshooting](#troubleshooting) section
+If you get an error running `dbt deps`, check out the [troubleshooting](#troubleshooting) section
 	
 3. Connect to Snowflake
     - Once dbt is installed, you will need to create a profiles file (first check to see if one was created automatically) that will establish a connection to Snowflake.
