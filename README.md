@@ -5,39 +5,44 @@
 - [Install dbt CLI](#install-dbt-cli)
 - [Useful dbt Commands](#useful-dbt-commands)
 - [Troubleshooting](#troubleshooting)
-- [Get DBT Cloud](#get-dbt-cloud)	
+- [Get DBT Cloud](#get-dbt-cloud)
+
+Welcome to the Eide Bailly dbt demo! In this tutorial, you will be cloning an existing dbt repository and installing dbt on your local machine. This will allow you to access a dbt repository where you can transform your data with ease. 
+DBT is a tool used to orchestrate transformation of SQL scripts (ex. Run this script, then that one, and this one has to run before that one….).  It requires some setup, but ongoing saves a lot of time otherwise spent figuring out dependencies, lineage, & data dictionaries. 
 
 ## PreReqs
+Before continuing with this tutorial, please make sure to have the following installed on your machine. 
 - [Visual Studio Code](https://code.visualstudio.com/download])
 - [Git](https://git-scm.com/downloads)
 - [Python3](https://www.python.org/downloads/windows/) 
 
 ## Clone this Repository
-If you haven't already, clone this repository to your local machine. Open the project with Visual Studio Code
+Clone this repository to your local machine. Open the project with Visual Studio Code. 
 
 ## Install dbt CLI
 
 1. Change to your personal root folder (i.e. C:/Users/<your_user>/)
 
 2. Install DBT using Command Line Interface
+    - We will be installing dbt using the CLI. You can do this using Windows Powershell or Git  Bash. I recommend using Git Bash because you will need to use it in a later step. 
 	### Git Bash (login as administrator)
 	```bash
 	python -m venv dbt-env                      #Create a Virtual Environment for DBT called "dbt-env"
 	source ~/dbt-env/Scripts/activate           #Activate the virtual environment
 	pip install dbt                             #Install DBT
-	dbt deps                                    #Install dbt_utils (used in most dbt scripts)
 	```	
 
-	**Bash Pro-Tip:** alias these commands in your ~/.bashrc file. For example, you can add a command like "alias env_dbt='source ~/dbt-env/bin/activate'" and then every time you type "env_dbt" it will activate the dbt environment.
+	**Bash Pro-Tip:** alias these commands in your ~/.bashrc file. For example, you can add a command like "alias dbt_env='source ~/dbt-env/bin/activate'" and then every time you type "env_dbt" it will activate the dbt environment.
 		
       ```bash
       # Add alias to ~/.bashrc
-      cd ~                                		    #change to the root directory
+      cd ~                                          #change to the root directory
       nano .bashrc                        	    #open the file in a text editor
 
       #Paste these commands in the text box: 
-      alias env_dbt='source ~/dbt-env/bin/activate'
+      alias dbt_env='source ~/dbt-env/bin/activate'
       alias dbt_repo='cd /<path_to_repository>'     #replace <path_to_repository> with the location to the repository you cloned earlier
+      alias dbt_prof='export DBT_PROFILES_DIR=~/dbt-env' #this command will be used later to locate your profiles.yml file
 
       #Ctrl+X to exit, press 'Y' to save changes
       source .bashrc                      	    #reload your .bashrc file so the aliases work
@@ -49,13 +54,16 @@ If you haven't already, clone this repository to your local machine. Open the pr
 	py -m venv dbt-env                          #Create a Virtual Environment for DBT called "dbt-env"
 	.\\dbt-env\Scripts\activate                 #Activate the virtual environment
 	pip install dbt                             #Install DBT
-	dbt deps                                    #Install dbt_utils (used in most dbt scripts)
 	```
 If you get an error running `dbt deps`, check out the [troubleshooting](#troubleshooting) section
 	
 3. Connect to Snowflake
+    - Login to [Snowflake](https://xna97994.us-east-1.snowflakecomputing.com/) using the credentials found in LastPass (listed as "Eide Bailly - SnowflakeAdmin" under Shared-Xerva Developers)
+    - Create a schema called <your_name>_dev (e.g. `CREATE SCHEMA DBT_DEMO_DW.SETH_DEV`)
     - Once dbt is installed, you will need to create a profiles file (first check to see if one was created automatically) that will establish a connection to Snowflake.
-    - Open a blank notepad and paste the code below. Search "DBT Demo" in LastPass for the login credentials.
+    - Open a blank notepad and paste the code below. You need to replace the following items: 
+    	- **Passwords:** Search "DBT Demo" in LastPass for the login credentials and replace the #'s for the passwords.
+    	- **Dev Schema:** Replace <your_schema> with the schema you created in the previous step (e.g. SETH_DEV)
     ```
     eb-dbt-demo:
     target: dev
@@ -71,7 +79,7 @@ If you get an error running `dbt deps`, check out the [troubleshooting](#trouble
         role: SYSADMIN
         database: DBT_DEMO_DW
         warehouse: DEMO_WH
-        schema: DW_DEV
+        schema: <your_schema>
         threads: 4
         client_session_keep_alive: False
 
@@ -96,8 +104,10 @@ If you get an error running `dbt deps`, check out the [troubleshooting](#trouble
 
 4. Run dbt
   If you made it this far, great job! You should now be able to run dbt commands in your repository. Let's check. 
-    -  Change your directory to this git repository (dbt_demo) that you should have cloned/downloaded(`cd /Xerva/Training/dbt_demo/`).
-    -  Refer back to step 2 to activate your virtual environment (if you are on the same command line as previous steps, you won't have to activate it again)
+    -  Open git bash. Reference your profiles.yml file by executing: `export DBT_PROFILES_DIR=~/dbt-env`. This tells dbt where your profiles.yml file is located and references it when establishing a connection to the data source. 
+    -  Change your directory to this git repository (dbt_demo) that you should have cloned/downloaded(`cd /Xerva/Training/dbt_demo/` --this is where mine is located).
+    -  Refer back to step 2 to activate your virtual environment (if you are using the same command line as previous steps, you won't have to activate it again. Remember you can also use the alias if you created one in step 2).
+    -  Run `dbt deps` to install dbt_utils (used in most dbt scripts). You must be in the dbt repository and have your virtual environment activated to run dbt commands. 
     -  Run `dbt test` to make sure dbt runs (if it does, dbt was installed correctly! If it doesn't, refer to the [troubleshooting](#troubleshooting) section below).
 
 5. Participation 
@@ -129,7 +139,7 @@ Now that you have successfully installed dbt, let's test it and make sure it run
     version: 0.6.4
   ```
   
-# Get DBT Cloud
+## Get DBT Cloud
 For simplicity, I have created a dbt Cloud environment for each of you to use. This repository is linked to the DBT Cloud environment I created so that you can run dbt commands and make updates to the dbt repository. Although you do not need to create your own dbt Cloud environment, here are a list of steps to go through in creating a new project. 
 1. Follow the steps found in [DBT Initial Configuration](https://github.com/sericksoneb/eb_dbt_demo/blob/main/DBT%20Initial%20Configuration.md)
 2. [Sign up](https://www.getdbt.com/signup/) for dbt Cloud
