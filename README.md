@@ -1,14 +1,14 @@
 # Eide Bailly dbt Demo
+Welcome to the Eide Bailly dbt demo! In this tutorial, you will be cloning an existing dbt repository and installing dbt on your local machine. This will allow you to access a dbt repository where you can transform your data with ease. 
+DBT is a tool used to orchestrate transformation of SQL scripts (ex. Run this script, then that one, and this one has to run before that one….).  It requires some setup, but ongoing saves a lot of time otherwise spent figuring out dependencies, lineage, & data dictionaries. For more information, check out this [introduction to dbt](https://docs.getdbt.com/docs/introduction)
 
 ## Table of Contents
 - [PreReqs](#prereqs)
 - [Install dbt CLI](#install-dbt-cli)
 - [Useful dbt Commands](#useful-dbt-commands)
 - [Troubleshooting](#troubleshooting)
-- [Get DBT Cloud](#get-dbt-cloud)
-
-Welcome to the Eide Bailly dbt demo! In this tutorial, you will be cloning an existing dbt repository and installing dbt on your local machine. This will allow you to access a dbt repository where you can transform your data with ease. 
-DBT is a tool used to orchestrate transformation of SQL scripts (ex. Run this script, then that one, and this one has to run before that one….).  It requires some setup, but ongoing saves a lot of time otherwise spent figuring out dependencies, lineage, & data dictionaries. 
+- [Get DBT Cloud (Optional)](#get-dbt-cloud)
+- [Additional Resources](#additional-resources)
 
 ## PreReqs
 Before continuing with this tutorial, please make sure to have the following installed on your machine. 
@@ -147,4 +147,10 @@ For simplicity, I have created a dbt Cloud environment for each of you to use. T
 4. Configure project to use dbt repository and Establish Connection to DB (Account Settings > Projects > Project Name > Add Repository/Connection) 
 5. Add generated deploy key to your github repository
 6. Create [Dev/Prod Environments](https://cloud.getdbt.com/#/accounts/21506/projects/35634/environments/).
+	
+## Additional Resources
+- [Introduction to dbt](https://docs.getdbt.com/docs/introduction)
+- [Generate dbt docs](https://docs.getdbt.com/reference/commands/cmd-docs)
+- [Jinja & Macros](https://docs.getdbt.com/docs/building-a-dbt-project/jinja-macros)
+- [Using dbt sources](https://docs.getdbt.com/docs/building-a-dbt-project/using-sources)
 
